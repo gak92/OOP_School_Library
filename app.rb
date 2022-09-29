@@ -63,7 +63,12 @@ class App
   end
 
   def list_all_books
-    puts "List all Books"
+    if @books.empty?
+      puts "Book list is empty"
+    else
+      puts "List of all Books"
+      @books.each {|book| puts "Title: #{book.title} Author: #{book.author}"}
+    end
   end
 
   def list_all_people
