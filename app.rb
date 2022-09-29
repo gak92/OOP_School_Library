@@ -1,5 +1,16 @@
+require_relative 'person'
+require_relative 'student'
+require_relative 'teacher'
+require_relative 'book'
+require_relative 'rental'
+
 class App
+  attr_accessor :persons, :books, :rentals
+
   def initialize
+    @persons = []
+    @books = []
+    @rentals = []
   end
 
   def run
@@ -20,7 +31,8 @@ class App
   end
 
   def main_menu
-    puts "----------------"
+    puts ""
+    puts "-------------------------------------------"
     puts "Please choose an option by enter a number: "
     puts "1 - List all books"
     puts "2 - List all people"
@@ -59,7 +71,57 @@ class App
   end
 
   def create_a_person
-    puts "Create a person"
+    puts "Creating a Person"
+    print "Do you want to create a student(1) or a teacher(2)? [Enter the number]: "
+    input = gets.chomp
+
+    case input
+    when '1'
+      create_a_student
+    when '2'
+      create_a_teacher
+    else
+      puts "Input not valid. Please enter a valid input (1) or (2)"
+    end
+  end
+
+  def create_a_student
+    puts "Creating a student ..."
+    id = SecureRandom.uuid
+
+    print "Age: "
+    age = gets.chomp.to_i
+    
+    print "Name: "
+    name = gets.chomp
+    
+    print "Has parent permission? [Y/N]: "
+    parent_permission = gets.chomp.upcase
+    parent_permission = parent_permission == 'Y' ? true : false
+    
+    student = Student.new(age, name, parent_permission: parent_permission)
+    persons.push(student)
+
+    puts "Student #{name} created successfully"
+  end
+
+  def create_a_teacher
+    puts "Creating a teacher ..."
+    id = SecureRandom.uuid
+
+    print "Age: "
+    age = gets.chomp.to_i
+    
+    print "Name: "
+    name = gets.chomp
+    
+    print "Specialization: "
+    specialization = gets.chomp
+    
+    teacher = Teacher.new(age, specialization, name)
+    persons.push(teacher)
+
+    puts "Teacher #{name} created successfully"
   end
 
   def create_a_book
