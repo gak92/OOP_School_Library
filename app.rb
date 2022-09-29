@@ -87,8 +87,6 @@ class App
 
   def create_a_student
     puts "Creating a student ..."
-    id = SecureRandom.uuid
-
     print "Age: "
     age = gets.chomp.to_i
     
@@ -107,8 +105,6 @@ class App
 
   def create_a_teacher
     puts "Creating a teacher ..."
-    id = SecureRandom.uuid
-
     print "Age: "
     age = gets.chomp.to_i
     
@@ -125,7 +121,17 @@ class App
   end
 
   def create_a_book
-    puts "Create a book"
+    puts "Creating a book ... "
+    print "Book Title: "
+    title = gets.chomp
+
+    print "Book Author: "
+    author = gets.chomp
+
+    book = Book.new(title, author)
+    books.push(book)
+
+    puts "Book #{title} created successfully"
   end
 
   def create_a_rental
