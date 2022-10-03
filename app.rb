@@ -67,7 +67,7 @@ class App
       puts 'Book list is empty'
     else
       puts 'List of all Books'
-      @books.each { |book| puts "Title: #{book.title} Author: #{book.author}" }
+      @books.each_with_index { |book, index| puts "#{index}) Title: #{book.title} Author: #{book.author}" }
     end
   end
 
@@ -77,7 +77,7 @@ class App
       puts 'Person list is empty'
     else
       puts 'List of all People'
-      @persons.each { |person| puts "[#{person.class}] ID: #{person.id} Name: #{person.name} Age: #{person.age}" }
+      @persons.each_with_index { |person, index| puts "#{index}) [#{person.class}] ID:#{person.id} Name: #{person.name} Age:#{person.age}" }
     end
 
   end
@@ -149,11 +149,11 @@ class App
     puts 'Creating a rental ... '
 
     puts 'Select a book from the following list by a number'
-    @books.each_with_index { |book, index| puts "#{index}) Title: #{book.title} Author: #{book.author}" }
+    list_all_books
     book_index = InputReader.read_integer
 
     puts 'Select a person from the following list by a number (not from id)'
-    @persons.each_with_index { |person, index| puts "#{index}) ID:#{person.id} Name: #{person.name} Age:#{person.age}" }
+    list_all_people
     person_index = InputReader.read_integer
 
     print 'Date: '
@@ -169,7 +169,7 @@ class App
     puts 'List of all rentals by person id'
 
     puts 'Select a person from the following list by ID'
-    @persons.each { |person| puts "ID: #{person.id} Name: #{person.name} Age:#{person.age}" }
+    list_all_people
     id = InputReader.read_input
 
     puts 'Rentals: '
