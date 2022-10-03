@@ -19,7 +19,7 @@ class App
       main_menu
 
       print 'Enter your option: '
-      input = gets.chomp
+      input = InputReader.read_input
 
       if input == '7'
         puts 'Thanks for using the app'
@@ -83,7 +83,7 @@ class App
   def create_a_person
     puts 'Creating a Person'
     print 'Do you want to create a student(1) or a teacher(2)? [Enter the number]: '
-    input = gets.chomp
+    input = InputReader.read_input
 
     case input
     when '1'
@@ -98,13 +98,13 @@ class App
   def create_a_student
     puts 'Creating a student ...'
     print 'Age: '
-    age = gets.chomp.to_i
+    age = InputReader.read_integer
 
     print 'Name: '
-    name = gets.chomp
+    name = InputReader.read_input
 
     print 'Has parent permission? [Y/N]: '
-    parent_permission = gets.chomp.upcase
+    parent_permission = InputReader.read_input_upcase
     parent_permission = parent_permission == 'Y'
 
     student = Student.new(age, name, parent_permission: parent_permission)
@@ -116,13 +116,13 @@ class App
   def create_a_teacher
     puts 'Creating a teacher ...'
     print 'Age: '
-    age = gets.chomp.to_i
+    age = InputReader.read_integer
 
     print 'Name: '
-    name = gets.chomp
+    name = InputReader.read_input
 
     print 'Specialization: '
-    specialization = gets.chomp
+    specialization = InputReader.read_input
 
     teacher = Teacher.new(age, specialization, name)
     persons.push(teacher)
@@ -133,10 +133,10 @@ class App
   def create_a_book
     puts 'Creating a book ... '
     print 'Book Title: '
-    title = gets.chomp
+    title = InputReader.read_input
 
     print 'Book Author: '
-    author = gets.chomp
+    author = InputReader.read_input
 
     book = Book.new(title, author)
     books.push(book)
@@ -149,14 +149,14 @@ class App
 
     puts 'Select a book from the following list by a number'
     @books.each_with_index { |book, index| puts "#{index}) Title: #{book.title} Author: #{book.author}" }
-    book_index = gets.chomp.to_i
+    book_index = InputReader.read_integer
 
     puts 'Select a person from the following list by a number (not from id)'
     @persons.each_with_index { |person, index| puts "#{index}) ID:#{person.id} Name: #{person.name} Age:#{person.age}" }
-    person_index = gets.chomp.to_i
+    person_index = InputReader.read_integer
 
     print 'Date: '
-    date = gets.chomp
+    date = InputReader.read_input
 
     rental = Rental.new(date, @persons[person_index], @books[book_index])
     @rentals.push(rental)
@@ -169,7 +169,7 @@ class App
 
     puts 'Select a person from the following list by ID'
     @persons.each { |person| puts "ID: #{person.id} Name: #{person.name} Age:#{person.age}" }
-    id = gets.chomp
+    id = InputReader.read_input
 
     puts 'Rentals: '
     @rentals.each do |rental|
