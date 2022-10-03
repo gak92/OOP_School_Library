@@ -29,6 +29,11 @@ Create a repo then clone it and open into Visual Studio Code
 - GitHub: [@gak92](https://github.com/gak92)
 - LinkedIn: [LinkedIn](https://www.linkedin.com/in/ghazanfar-ali-9a4998a/)
 
+👤 **Ushindi Bienvenu**
+
+- GitHub: [@bienvenuushindi](https://github.com/bienvenuushindi)
+- LinkedIn: [LinkedIn](http://www.linkedin.com/in/usbbush)
+
 ## 🤝 Contributing
 
 Contributions, issues, and feature requests are welcome!
