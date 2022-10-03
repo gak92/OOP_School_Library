@@ -3,6 +3,7 @@ require_relative 'student'
 require_relative 'teacher'
 require_relative 'book'
 require_relative 'rental'
+require_relative 'input_reader'
 
 class App
   attr_accessor :persons, :books, :rentals
@@ -104,28 +105,27 @@ class App
 
     print 'Name: '
     name = InputReader.read_input
-    { age: age, name: name }
+    [age, name]
   end
 
   def create_a_student
-    input = input_age_name
+    age, name = input_age_name
     print 'Has parent permission? [Y/N]: '
     parent_permission = InputReader.read_input_upcase
     parent_permission = parent_permission == 'Y'
 
-    student = Student.new(input.age, input.name, parent_permission: parent_permission)
+    student = Student.new(age, name, parent_permission: parent_permission)
     persons.push(student)
 
     puts "Student #{name} created successfully"
   end
 
   def create_a_teacher
-    input = input_age_name
-
+    age, name = input_age_name
     print 'Specialization: '
     specialization = InputReader.read_input
 
-    teacher = Teacher.new(input.age, specialization, input.name)
+    teacher = Teacher.new(age, specialization, name)
     persons.push(teacher)
 
     puts "Teacher #{name} created successfully"
