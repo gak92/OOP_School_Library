@@ -72,7 +72,6 @@ class App
   end
 
   def list_all_people
-    list = []
     if @persons.empty?
       puts 'Person list is empty'
     else
@@ -98,7 +97,7 @@ class App
     end
   end
 
-  def get_age_name
+  def input_age_name
     puts 'Creating a Person ...'
     print 'Age: '
     age = InputReader.read_integer
@@ -109,7 +108,7 @@ class App
   end
 
   def create_a_student
-    input = get_age_name
+    input = input_age_name
     print 'Has parent permission? [Y/N]: '
     parent_permission = InputReader.read_input_upcase
     parent_permission = parent_permission == 'Y'
@@ -121,7 +120,7 @@ class App
   end
 
   def create_a_teacher
-    input = get_age_name
+    input = input_age_name
 
     print 'Specialization: '
     specialization = InputReader.read_input
