@@ -77,9 +77,10 @@ class App
       puts 'Person list is empty'
     else
       puts 'List of all People'
-      @persons.each_with_index { |person, index| puts "#{index}) [#{person.class}] ID:#{person.id} Name: #{person.name} Age:#{person.age}" }
+      @persons.each_with_index do |person, index|
+        puts "#{index}) [#{person.class}] ID:#{person.id} Name: #{person.name} Age:#{person.age}"
+      end
     end
-
   end
 
   def create_a_person
@@ -104,7 +105,7 @@ class App
 
     print 'Name: '
     name = InputReader.read_input
-    {age:age,name:name}
+    { age: age, name: name }
   end
 
   def create_a_student
