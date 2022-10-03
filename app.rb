@@ -72,12 +72,14 @@ class App
   end
 
   def list_all_people
+    list = []
     if @persons.empty?
       puts 'Person list is empty'
     else
       puts 'List of all People'
       @persons.each { |person| puts "[#{person.class}] ID: #{person.id} Name: #{person.name} Age: #{person.age}" }
     end
+
   end
 
   def create_a_person
@@ -95,36 +97,35 @@ class App
     end
   end
 
-  def create_a_student
-    puts 'Creating a student ...'
+  def get_age_name
+    puts 'Creating a Person ...'
     print 'Age: '
     age = InputReader.read_integer
 
     print 'Name: '
     name = InputReader.read_input
+    {age:age,name:name}
+  end
 
+  def create_a_student
+    input = get_age_name
     print 'Has parent permission? [Y/N]: '
     parent_permission = InputReader.read_input_upcase
     parent_permission = parent_permission == 'Y'
 
-    student = Student.new(age, name, parent_permission: parent_permission)
+    student = Student.new(input.age, input.name, parent_permission: parent_permission)
     persons.push(student)
 
     puts "Student #{name} created successfully"
   end
 
   def create_a_teacher
-    puts 'Creating a teacher ...'
-    print 'Age: '
-    age = InputReader.read_integer
-
-    print 'Name: '
-    name = InputReader.read_input
+    input = get_age_name
 
     print 'Specialization: '
     specialization = InputReader.read_input
 
-    teacher = Teacher.new(age, specialization, name)
+    teacher = Teacher.new(input.age, specialization, input.name)
     persons.push(teacher)
 
     puts "Teacher #{name} created successfully"
