@@ -4,6 +4,7 @@ require_relative 'teacher'
 require_relative 'book'
 require_relative 'rental'
 require_relative 'input_reader'
+require_relative 'serializer'
 require 'json'
 
 class App
@@ -23,17 +24,17 @@ class App
       data = JSON.parse(File.read(file_name))
     end
 
-    return data
+    data
   end
 
   def save_persons
     file_name = './data/persons.json'
 
     if File.exists?(file_name)
-      File.write(file_name, JSON.generate(@persons))
+      File.write(file_name, Serializer.to_string(persons))
     else
       File.open(file_name, "w") do |f|     
-        f.write(JSON.generate(@persons))
+        f.write(Serializer.to_string(persons))
       end
     end
     
@@ -56,8 +57,8 @@ class App
       if input == '7'
         puts 'Thanks for using the app'
         save_persons
-        save_books
-        save_rentals
+        # save_books
+        # save_rentals
         break
       end
 
