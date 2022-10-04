@@ -22,7 +22,6 @@ class App
 
     if File.exist?(file_name)
       file_data = JSON.parse(File.read(file_name))
-      puts file_data
       data = Serializer.to_object(file_data)
     end
 
@@ -36,7 +35,19 @@ class App
     File.write(file_name, Serializer.to_string(@persons))
   end
 
-  def load_books; end
+  def load_books; 
+    data = []
+    file_name = './data/books.json'
+
+    if File.exist?(file_name)
+      file_data = JSON.parse(File.read(file_name))
+      file_data.each do |book|
+        data.push(Book.new({title: book.title, author: book.author}))
+      end
+    end
+
+    data
+  end
 
   def load_rentals; end
 
