@@ -31,7 +31,6 @@ class App
   def save_persons
     file_name = './data/persons.json'
 
-    end
     File.write(file_name, Serializer.to_string(@persons))
   end
 
@@ -39,14 +38,25 @@ class App
     data = []
     file_name = './data/books.json'
 
-    if File.exist?(file_name)
+    if File.exist?(file_name) && File.read(file_name) != ''
       file_data = JSON.parse(File.read(file_name))
       file_data.each do |book|
-        data.push(Book.new({title: book.title, author: book.author}))
+        data.push(Book.new(book['title'], book['author']))
       end
     end
 
     data
+  end
+
+  def save_books
+    file_name = './data/books.json'
+    data = []
+
+    @books.each do |book|
+      data.push({title: book.title, author: book.author})
+    end
+
+    File.write(file_name, JSON.generate(data))
   end
 
   def load_rentals; end
@@ -62,7 +72,7 @@ class App
       if input == '7'
         puts 'Thanks for using the app'
         save_persons
-        # save_books
+        save_books
         # save_rentals
         break
       end
