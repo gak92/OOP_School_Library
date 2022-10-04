@@ -8,7 +8,7 @@ class Serializer
   end
 
   def self.to_object(arr)
-    arr.map { |hash| [hash.class].new(hash.age,hash.name,hash.parent_permission) }
+    arr.map { |person| Student.new(person['age'], person['name'], parent_permission: person['parent_permission']) }
   end
 end
 

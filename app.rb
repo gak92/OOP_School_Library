@@ -21,7 +21,9 @@ class App
     file_name = './data/persons.json'
 
     if File.exists?(file_name)
-      data = JSON.parse(File.read(file_name))
+      file_data = JSON.parse(File.read(file_name))
+      puts file_data
+      data = Serializer.to_object(file_data)
     end
 
     data
