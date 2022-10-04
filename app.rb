@@ -20,7 +20,7 @@ class App
     data = []
     file_name = './data/persons.json'
 
-    if File.exists?(file_name)
+    if File.exist?(file_name)
       file_data = JSON.parse(File.read(file_name))
       puts file_data
       data = Serializer.to_object(file_data)
@@ -32,21 +32,13 @@ class App
   def save_persons
     file_name = './data/persons.json'
 
-    if File.exists?(file_name)
-      File.write(file_name, Serializer.to_string(@persons))
-    else
-      File.open(file_name, "w") do |f|     
-        f.write(Serializer.to_string(@persons))
-      end
     end
-    
+    File.write(file_name, Serializer.to_string(@persons))
   end
 
-  def load_books
-  end
+  def load_books; end
 
-  def load_rentals
-  end
+  def load_rentals; end
 
   def run
     puts 'Welcome to School Library App!'
