@@ -21,8 +21,22 @@ class App
 
     if File.exists?(file_name)
       data = JSON.parse(File.read(file_name))
+    end
 
     return data
+  end
+
+  def save_persons
+    file_name = './data/persons.json'
+
+    if File.exists?(file_name)
+      File.write(file_name, JSON.generate(@persons))
+    else
+      File.open(file_name, "w") do |f|     
+        f.write(JSON.generate(@persons))
+      end
+    end
+    
   end
 
   def load_books
@@ -41,6 +55,9 @@ class App
 
       if input == '7'
         puts 'Thanks for using the app'
+        save_persons
+        save_books
+        save_rentals
         break
       end
 
