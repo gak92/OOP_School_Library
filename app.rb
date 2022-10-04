@@ -4,14 +4,31 @@ require_relative 'teacher'
 require_relative 'book'
 require_relative 'rental'
 require_relative 'input_reader'
+require 'json'
 
 class App
   attr_accessor :persons, :books, :rentals
 
   def initialize
-    @persons = []
-    @books = []
-    @rentals = []
+    @persons = load_persons
+    @books = load_books
+    @rentals = load_rentals
+  end
+
+  def load_persons
+    data = []
+    file_name = './data/persons.json'
+
+    if File.exists?(file_name)
+      data = JSON.parse(File.read(file_name))
+
+    return data
+  end
+
+  def load_books
+  end
+
+  def load_rentals
   end
 
   def run
