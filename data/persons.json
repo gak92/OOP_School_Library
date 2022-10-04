@@ -1,1 +1,1 @@
-"[{\"age\"=>20, \"name\"=>\"ushindi\", \"parent_permission\"=>true, \"class\"=>Student}]"
+[{"id":"5fa21d93-7b2d-4700-be8c-adae5e905fa4","age":17,"name":"Rose","parent_permission":false},{"id":"d4430782-a41f-4433-af3c-2b8dfda61b55","age":21,"name":"Mary","parent_permission":true}]

@@ -31,10 +31,10 @@ class App
     file_name = './data/persons.json'
 
     if File.exists?(file_name)
-      File.write(file_name, Serializer.to_string(persons))
+      File.write(file_name, Serializer.to_string(@persons))
     else
       File.open(file_name, "w") do |f|     
-        f.write(Serializer.to_string(persons))
+        f.write(Serializer.to_string(@persons))
       end
     end
     
@@ -150,7 +150,7 @@ class App
     parent_permission = parent_permission == 'Y'
 
     student = Student.new(age, name, parent_permission: parent_permission)
-    persons.push(student)
+    @persons.push(student)
 
     puts "Student #{name} created successfully"
   end
@@ -161,7 +161,7 @@ class App
     specialization = InputReader.read_input
 
     teacher = Teacher.new(age, specialization, name)
-    persons.push(teacher)
+    @persons.push(teacher)
 
     puts "Teacher #{name} created successfully"
   end
@@ -175,7 +175,7 @@ class App
     author = InputReader.read_input
 
     book = Book.new(title, author)
-    books.push(book)
+    @books.push(book)
 
     puts "Book #{title} created successfully"
   end
