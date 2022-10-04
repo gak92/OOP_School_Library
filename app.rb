@@ -34,7 +34,7 @@ class App
     File.write(file_name, Serializer.to_string(@persons))
   end
 
-  def load_books; 
+  def load_books
     data = []
     file_name = './data/books.json'
 
@@ -53,7 +53,7 @@ class App
     data = []
 
     @books.each do |book|
-      data.push({title: book.title, author: book.author})
+      data.push({ title: book.title, author: book.author })
     end
 
     File.write(file_name, JSON.generate(data))
