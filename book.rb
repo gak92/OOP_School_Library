@@ -1,11 +1,11 @@
 require 'securerandom'
 
 class Book
-  attr_accessor :title, :author
-  attr_reader :id, :rentals
+  attr_accessor :title, :author, :id
+  attr_reader :rentals
 
   def initialize(title, author)
-    @id = SecureRandom.uuid
+    @id = ''
     @title = title
     @author = author
     @rentals = []
