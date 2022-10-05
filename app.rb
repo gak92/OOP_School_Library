@@ -1,97 +1,16 @@
-require_relative 'person'
-require_relative 'student'
-require_relative 'teacher'
-require_relative 'book'
-require_relative 'rental'
 require_relative 'input_reader'
-require_relative 'serializer'
-require 'json'
-require 'securerandom'
-
+require_relative 'loader'
+require_relative 'saver'
+require_relative 'creator'
+require_relative 'lister'
 
 class App
-  attr_accessor :persons, :books, :rentals
+  attr_accessor :people, :books, :rentals
 
   def initialize
-    @persons = load_persons
-    @books = load_books
-    @rentals = load_rentals
-  end
-
-  def load_persons
-    data = []
-    file_name = './data/persons.json'
-
-    if File.exist?(file_name)
-      file_data = JSON.parse(File.read(file_name))
-      data = Serializer.to_object(file_data)
-    end
-
-    data
-  end
-
-  def save_persons
-    file_name = './data/persons.json'
-
-    File.write(file_name, Serializer.to_string(@persons))
-  end
-
-  def load_books
-    data = []
-    file_name = './data/books.json'
-
-    if File.exist?(file_name) && File.read(file_name) != ''
-      file_data = JSON.parse(File.read(file_name))
-      file_data.each do |book|
-        new_book = Book.new(book['title'], book['author'])
-        new_book.id = book['id']
-        data.push(new_book)
-      end
-    end
-
-    data
-  end
-
-  def save_books
-    file_name = './data/books.json'
-    data = []
-
-    @books.each do |book|
-      data.push({ id: book.id, title: book.title, author: book.author })
-    end
-
-    File.write(file_name, JSON.generate(data))
-  end
-
-  def save_rentals
-    file_name = './data/rentals.json'
-    data = []
-
-    @rentals.each do |rental|
-      data.push({date: rental.date, person:rental.person.id, book:rental.book.id}) #{date:'', person: <Student #2948495bdndb>,}
-    end
-
-    File.write(file_name, JSON.generate(data))
-  end
-
-  def load_rentals
-    data = []
-    file_name = './data/rentals.json'
-
-    if File.exist?(file_name) && File.read(file_name) != ''
-      file_data = JSON.parse(File.read(file_name))
-      file_data.each do |rental|
-        person_obj = @persons.select do |person|
-          person.id == rental['person']
-        end
-        book_obj = @books.select do |book|
-          book.id == rental['book']
-        end
-        data.push(Rental.new(rental['date'], person_obj, book_obj))
-      end
-    end
-
-    data
+    @people = Loader.people
+    @books = Loader.books
+    @rentals = Loader.rentals(@people, @books)
   end
 
   def run
@@ -104,12 +23,11 @@ class App
 
       if input == '7'
         puts 'Thanks for using the app'
-        save_persons
-        save_books
-        save_rentals
+        Saver.people(@people)
+        Saver.books(@books)
+        Saver.rentals(@rentals)
         break
       end
-
       options(input)
     end
   end
@@ -130,137 +48,22 @@ class App
   def options(input)
     case input
     when '1'
-      list_all_books
+      Lister.books(@books)
     when '2'
-      list_all_people
+      Lister.people(@people)
     when '3'
-      create_a_person
+      Creator.people(people)
     when '4'
-      create_a_book
+      @books.push(Creator.book)
+      puts 'Book created successfully'
     when '5'
-      create_a_rental
+      @rentals.push(Creator.rental(@people,@books))
+      puts 'Rental created successfully'
     when '6'
-      list_all_rentals_by_person_id
+      Lister.rentals_by_person_id(@people, @rentals)
     else
       puts 'Please choose a valid option'
     end
   end
 
-  def list_all_books
-    if @books.empty?
-      puts 'Book list is empty'
-    else
-      puts 'List of all Books'
-      @books.each_with_index { |book, index| puts "#{index}) Title: #{book.title} Author: #{book.author}" }
-    end
-  end
-
-  def list_all_people
-    if @persons.empty?
-      puts 'Person list is empty'
-    else
-      puts 'List of all People'
-      @persons.each_with_index do |person, index|
-        puts "#{index}) [#{person.class}] ID:#{person.id} Name: #{person.name} Age:#{person.age}"
-      end
-    end
-  end
-
-  def create_a_person
-    puts 'Creating a Person'
-    print 'Do you want to create a student(1) or a teacher(2)? [Enter the number]: '
-    input = InputReader.read_input
-
-    case input
-    when '1'
-      create_a_student
-    when '2'
-      create_a_teacher
-    else
-      puts 'Input not valid. Please enter a valid input (1) or (2)'
-    end
-  end
-
-  def input_age_name
-    puts 'Creating a Person ...'
-    print 'Age: '
-    age = InputReader.read_integer
-
-    print 'Name: '
-    name = InputReader.read_input
-    [age, name]
-  end
-
-  def create_a_student
-    age, name = input_age_name
-    print 'Has parent permission? [Y/N]: '
-    parent_permission = InputReader.read_input_upcase
-    parent_permission = parent_permission == 'Y'
-
-    student = Student.new(age, name, parent_permission: parent_permission)
-    student.id = SecureRandom.uuid
-    @persons.push(student)
-
-    puts "Student #{name} created successfully"
-  end
-
-  def create_a_teacher
-    age, name = input_age_name
-    print 'Specialization: '
-    specialization = InputReader.read_input
-
-    teacher = Teacher.new(age, specialization, name)
-    teacher.id = SecureRandom.uuid
-    @persons.push(teacher)
-
-    puts "Teacher #{name} created successfully"
-  end
-
-  def create_a_book
-    puts 'Creating a book ... '
-    print 'Book Title: '
-    title = InputReader.read_input
-
-    print 'Book Author: '
-    author = InputReader.read_input
-
-    book = Book.new(title, author)
-    book.id = SecureRandom.uuid
-    @books.push(book)
-
-    puts "Book #{title} created successfully"
-  end
-
-  def create_a_rental
-    puts 'Creating a rental ... '
-
-    puts 'Select a book from the following list by a number'
-    list_all_books
-    book_index = InputReader.read_integer
-
-    puts 'Select a person from the following list by a number (not from id)'
-    list_all_people
-    person_index = InputReader.read_integer
-
-    print 'Date: '
-    date = InputReader.read_input
-
-    rental = Rental.new(date, @persons[person_index], @books[book_index])
-    @rentals.push(rental)
-
-    puts 'Rental created successfully'
-  end
-
-  def list_all_rentals_by_person_id
-    puts 'List of all rentals by person id'
-
-    puts 'Select a person from the following list by ID'
-    list_all_people
-    id = InputReader.read_input
-
-    puts 'Rentals: '
-    @rentals.each do |rental|
-      puts "Date: #{rental.date} - Book: #{rental.book.title} - Author: #{rental.book.author}" if rental.person.id == id
-    end
-  end
 end
