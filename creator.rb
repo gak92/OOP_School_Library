@@ -48,6 +48,7 @@ class Creator
       book.id = SecureRandom.uuid
       book
     end
+
     def people(list)
       puts 'Creating a Person'
       print 'Do you want to create a student(1) or a teacher(2)? [Enter the number]: '
@@ -64,7 +65,8 @@ class Creator
         puts 'Input not valid. Please enter a valid input (1) or (2)'
       end
     end
-    def rental(people,books)
+
+    def rental(people, books)
       puts 'Creating a rental ... '
 
       puts 'Select a book from the following list by a number'

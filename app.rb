@@ -57,7 +57,7 @@ class App
       @books.push(Creator.book)
       puts 'Book created successfully'
     when '5'
-      @rentals.push(Creator.rental(@people,@books))
+      @rentals.push(Creator.rental(@people, @books))
       puts 'Rental created successfully'
     when '6'
       Lister.rentals_by_person_id(@people, @rentals)
@@ -65,5 +65,4 @@ class App
       puts 'Please choose a valid option'
     end
   end
-
 end
