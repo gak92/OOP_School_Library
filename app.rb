@@ -59,7 +59,30 @@ class App
     File.write(file_name, JSON.generate(data))
   end
 
-  def load_rentals; end
+  def save_rentals
+    file_name = './data/rentals.json'
+    data = []
+
+    @rentals.each do |rental|
+      data.push({date: rental.date, person:rental.person.id, book:rental.book.id}) #{date:'', person: <Student #2948495bdndb>,}
+    end
+
+    File.write(file_name, JSON.generate(data))
+  end
+
+  def load_rentals
+    data = []
+    file_name = './data/rentals.json'
+
+    if File.exist?(file_name) && File.read(file_name) != ''
+      file_data = JSON.parse(File.read(file_name))
+      file_data.each do |rental|
+        data.push(Rental.new(rental['date'],Serializer.to_object(),))
+      end
+    end
+
+    data
+  end
 
   def run
     puts 'Welcome to School Library App!'
@@ -73,7 +96,7 @@ class App
         puts 'Thanks for using the app'
         save_persons
         save_books
-        # save_rentals
+        save_rentals
         break
       end
 
