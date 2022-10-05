@@ -9,6 +9,10 @@ class Serializer
   end
 
   def self.to_object(arr)
-    arr.map { |person| Student.new(person['age'], person['name'], parent_permission: person['parent_permission']) }
+    arr.map do |person| 
+      new_person = Student.new(person['age'], person['name'], parent_permission: person['parent_permission'])
+      new_person.id = person['id']
+      new_person
+    end
   end
 end

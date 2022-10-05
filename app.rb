@@ -6,6 +6,8 @@ require_relative 'rental'
 require_relative 'input_reader'
 require_relative 'serializer'
 require 'json'
+require 'securerandom'
+
 
 class App
   attr_accessor :persons, :books, :rentals
@@ -41,7 +43,9 @@ class App
     if File.exist?(file_name) && File.read(file_name) != ''
       file_data = JSON.parse(File.read(file_name))
       file_data.each do |book|
-        data.push(Book.new(book['title'], book['author']))
+        new_book = Book.new(book['title'], book['author'])
+        new_book.id = book['id']
+        data.push(new_book)
       end
     end
 
@@ -53,7 +57,7 @@ class App
     data = []
 
     @books.each do |book|
-      data.push({ title: book.title, author: book.author })
+      data.push({ id: book.id, title: book.title, author: book.author })
     end
 
     File.write(file_name, JSON.generate(data))
@@ -77,7 +81,13 @@ class App
     if File.exist?(file_name) && File.read(file_name) != ''
       file_data = JSON.parse(File.read(file_name))
       file_data.each do |rental|
-        data.push(Rental.new(rental['date'],Serializer.to_object(),))
+        person_obj = @persons.select do |person|
+          person.id == rental['person']
+        end
+        book_obj = @books.select do |book|
+          book.id == rental['book']
+        end
+        data.push(Rental.new(rental['date'], person_obj, book_obj))
       end
     end
 
@@ -188,6 +198,7 @@ class App
     parent_permission = parent_permission == 'Y'
 
     student = Student.new(age, name, parent_permission: parent_permission)
+    student.id = SecureRandom.uuid
     @persons.push(student)
 
     puts "Student #{name} created successfully"
@@ -199,6 +210,7 @@ class App
     specialization = InputReader.read_input
 
     teacher = Teacher.new(age, specialization, name)
+    teacher.id = SecureRandom.uuid
     @persons.push(teacher)
 
     puts "Teacher #{name} created successfully"
@@ -213,6 +225,7 @@ class App
     author = InputReader.read_input
 
     book = Book.new(title, author)
+    book.id = SecureRandom.uuid
     @books.push(book)
 
     puts "Book #{title} created successfully"
