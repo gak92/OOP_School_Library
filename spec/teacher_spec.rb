@@ -13,7 +13,7 @@ describe Teacher do
 
   describe '#age' do
     it 'returns the correct age' do
-      @teacher.age.should eql  30
+      @teacher.age.should eql 30
     end
   end
   describe '#name' do

@@ -13,7 +13,7 @@ describe Student do
 
   describe '#age' do
     it 'returns the correct age' do
-      @student.age.should eql  20
+      @student.age.should eql 20
     end
   end
 

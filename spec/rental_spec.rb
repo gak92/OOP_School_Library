@@ -19,7 +19,6 @@ describe Rental do
 
   describe '#person' do
     it 'return person object' do
-      # @rental.person.should to be_a Person
       expect(@rental.person).to be_an(Person)
     end
   end
@@ -29,5 +28,4 @@ describe Rental do
       @rental.book.should be_an_instance_of Book
     end
   end
-
 end

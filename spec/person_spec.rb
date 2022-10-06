@@ -13,7 +13,7 @@ describe Person do
 
   describe '#age' do
     it 'returns the correct age' do
-      @person.age.should eql  27
+      @person.age.should eql 27
     end
   end
 
